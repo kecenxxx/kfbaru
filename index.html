@@ -10,6 +10,7 @@
         ::-webkit-scrollbar-track { background: #111827; }
         ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        .active-page { background-color: #dc2626; color: white; border-color: #dc2626; }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
@@ -20,10 +21,7 @@
                 STREAM<span class="text-white">DARK</span>
             </a>
             <div class="flex items-center gap-4">
-                <input type="text" placeholder="Cari film..." class="hidden md:block bg-gray-700 text-sm rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 w-64 lg:w-80 transition">
-                <button class="md:hidden text-gray-300 hover:text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </button>
+                <input type="text" id="searchInput" placeholder="Cari film..." class="hidden md:block bg-gray-700 text-sm rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 w-64 lg:w-80 transition">
             </div>
         </div>
     </nav>
@@ -32,13 +30,32 @@
         <div class="flex flex-col lg:flex-row gap-8">
             
             <div class="flex-1 w-full">
-                <div class="flex items-center justify-between mb-6 border-l-4 border-red-600 pl-3">
-                    <h2 class="text-lg md:text-xl font-semibold text-white">Film Terbaru</h2>
-                    <a href="#" class="text-xs text-red-500 hover:text-red-400">Lihat Semua &rarr;</a>
+                
+                <div class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-gray-800 p-4 rounded-lg border-l-4 border-red-600">
+                    
+                    <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
+                        <span class="text-xs font-bold text-gray-400 uppercase mr-2">Genre:</span>
+                        <div id="genre-buttons" class="flex gap-2">
+                            <button onclick="filterGenre('all')" class="px-3 py-1 text-xs rounded-full bg-red-600 text-white hover:bg-red-700 transition">All</button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-gray-400 uppercase">Urutkan:</span>
+                        <select id="sortSelect" onchange="handleSort()" class="bg-gray-700 text-xs text-white rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-red-600 border border-gray-600">
+                            <option value="newest">Terbaru Upload</option>
+                            <option value="oldest">Terlama</option>
+                            <option value="az">Judul A-Z</option>
+                        </select>
+                    </div>
                 </div>
                 
-                <div id="movie-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                <div id="movie-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 min-h-[500px]">
                     </div>
+
+                <div class="mt-8 flex justify-center items-center gap-2" id="pagination-controls">
+                    </div>
+
             </div>
 
             <div class="w-full lg:w-[350px] flex-shrink-0 space-y-6 lg:border-l lg:border-gray-800 lg:pl-6">
@@ -53,12 +70,9 @@
                 </div>
 
                 <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                    <h4 class="text-sm font-bold text-white mb-3 border-b border-gray-700 pb-2">Genre</h4>
-                    <div class="flex flex-wrap gap-2">
-                        <a href="#" class="text-xs bg-gray-700 hover:bg-red-600 px-3 py-1 rounded-full transition">Action</a>
-                        <a href="#" class="text-xs bg-gray-700 hover:bg-red-600 px-3 py-1 rounded-full transition">Horror</a>
-                        <a href="#" class="text-xs bg-gray-700 hover:bg-red-600 px-3 py-1 rounded-full transition">Drama</a>
-                    </div>
+                    <h4 class="text-sm font-bold text-white mb-3 border-b border-gray-700 pb-2">Genre Populer</h4>
+                    <div class="flex flex-wrap gap-2" id="sidebar-genres">
+                        </div>
                 </div>
 
             </div>
@@ -71,28 +85,164 @@
 
     <script src="data.js"></script>
     <script>
-        const gridContainer = document.getElementById('movie-grid');
-        
-        movies.forEach(film => {
-            const htmlItem = `
-                <a href="watch.html?id=${film.id}" class="group block relative overflow-hidden rounded-lg bg-gray-800 hover:ring-2 hover:ring-red-600 transition duration-300">
-                    <div class="relative pb-[145%] bg-gray-700">
-                        <img src="${film.thumbnail}" alt="${film.judul}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                        <span class="absolute top-2 right-2 bg-red-600 text-[10px] md:text-xs font-bold text-white px-2 py-0.5 rounded shadow">HD</span>
-                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 bg-black/40">
-                            <div class="bg-red-600 rounded-full p-2">
-                                <svg class="w-6 h-6 text-white pl-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+        // --- KONFIGURASI ---
+        const ITEMS_PER_PAGE = 12; // Jumlah film per halaman
+        let currentPage = 1;
+        let currentGenre = 'all';
+        let currentSort = 'newest';
+        let searchQuery = '';
+        let processedMovies = []; // Data yang sudah difilter/sort
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initGenreButtons();
+            applyFilters(); // Render pertama kali
+        });
+
+        // 1. Setup Tombol Genre Otomatis
+        function initGenreButtons() {
+            // Ambil semua genre unik dari data.js
+            const genres = new Set(movies.map(m => m.genre));
+            const container = document.getElementById('genre-buttons');
+            const sidebarContainer = document.getElementById('sidebar-genres');
+            
+            genres.forEach(g => {
+                // Tambah ke Top Bar
+                const btn = `<button onclick="filterGenre('${g}')" class="genre-btn px-3 py-1 text-xs rounded-full bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white transition border border-gray-600" data-genre="${g}">${g}</button>`;
+                container.innerHTML += btn;
+
+                // Tambah ke Sidebar
+                sidebarContainer.innerHTML += `<a href="#" onclick="filterGenre('${g}'); window.scrollTo(0,0);" class="text-xs bg-gray-700 hover:bg-red-600 px-3 py-1 rounded-full transition text-gray-300">${g}</a>`;
+            });
+        }
+
+        // 2. Event Listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase();
+            currentPage = 1; // Reset ke halaman 1 saat mencari
+            applyFilters();
+        });
+
+        function handleSort() {
+            currentSort = document.getElementById('sortSelect').value;
+            applyFilters();
+        }
+
+        function filterGenre(genre) {
+            currentGenre = genre;
+            currentPage = 1;
+            
+            // Update tampilan tombol aktif
+            document.querySelectorAll('.genre-btn').forEach(btn => {
+                if(btn.dataset.genre === genre) {
+                    btn.classList.remove('bg-gray-700', 'text-gray-300');
+                    btn.classList.add('bg-red-600', 'text-white');
+                } else {
+                    btn.classList.add('bg-gray-700', 'text-gray-300');
+                    btn.classList.remove('bg-red-600', 'text-white');
+                }
+            });
+            
+            applyFilters();
+        }
+
+        // 3. LOGIKA UTAMA: Filter & Sort Data
+        function applyFilters() {
+            // A. Filter by Genre & Search
+            let result = movies.filter(m => {
+                const matchGenre = currentGenre === 'all' || m.genre === currentGenre;
+                const matchSearch = m.judul.toLowerCase().includes(searchQuery);
+                return matchGenre && matchSearch;
+            });
+
+            // B. Sort Data
+            if (currentSort === 'newest') {
+                // Asumsi ID besar = baru (atau urutan array dibalik)
+                // Karena data.js Anda urut ID 1 sampai 41, kita balik agar 41 muncul duluan
+                result.reverse(); 
+            } else if (currentSort === 'oldest') {
+                // Urutan asli array (ID 1 duluan)
+                // Tidak perlu diapa-apakan karena defaultnya ID 1
+            } else if (currentSort === 'az') {
+                result.sort((a, b) => a.judul.localeCompare(b.judul));
+            }
+
+            processedMovies = result;
+            renderPage(currentPage);
+            renderPagination();
+        }
+
+        // 4. Render Grid Film
+        function renderPage(page) {
+            const grid = document.getElementById('movie-grid');
+            grid.innerHTML = '';
+
+            const start = (page - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const pageItems = processedMovies.slice(start, end);
+
+            if (pageItems.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10">Tidak ada film yang ditemukan.</div>';
+                return;
+            }
+
+            pageItems.forEach(film => {
+                const html = `
+                    <a href="watch.html?id=${film.id}" class="group block relative overflow-hidden rounded-lg bg-gray-800 hover:ring-2 hover:ring-red-600 transition duration-300 shadow-lg">
+                        <div class="relative pb-[145%] bg-gray-700">
+                            <img src="${film.thumbnail}" alt="${film.judul}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            <span class="absolute top-2 right-2 bg-red-600 text-[10px] md:text-xs font-bold text-white px-2 py-0.5 rounded shadow">HD</span>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 bg-black/40">
+                                <div class="bg-red-600 rounded-full p-2">
+                                    <svg class="w-6 h-6 text-white pl-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="p-3">
-                        <h3 class="text-xs md:text-sm font-bold text-white truncate group-hover:text-red-500 transition">${film.judul}</h3>
-                        <p class="text-[10px] text-gray-400 mt-1">${film.tahun} • ${film.genre}</p>
-                    </div>
-                </a>
-            `;
-            gridContainer.innerHTML += htmlItem;
-        });
+                        <div class="p-3">
+                            <h3 class="text-xs md:text-sm font-bold text-white truncate group-hover:text-red-500 transition">${film.judul}</h3>
+                            <p class="text-[10px] text-gray-400 mt-1">${film.tahun} • ${film.genre}</p>
+                        </div>
+                    </a>
+                `;
+                grid.innerHTML += html;
+            });
+        }
+
+        // 5. Render Tombol Pagination
+        function renderPagination() {
+            const container = document.getElementById('pagination-controls');
+            container.innerHTML = '';
+            
+            const totalPages = Math.ceil(processedMovies.length / ITEMS_PER_PAGE);
+            
+            if (totalPages <= 1) return; // Sembunyikan jika cuma 1 halaman
+
+            // Tombol Prev
+            const prevBtn = `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled class="opacity-50 cursor-not-allowed"' : ''} class="px-3 py-1 bg-gray-800 border border-gray-600 rounded text-sm hover:bg-gray-700">&larr;</button>`;
+            container.innerHTML += prevBtn;
+
+            // Tombol Angka
+            for (let i = 1; i <= totalPages; i++) {
+                const activeClass = i === currentPage ? 'active-page' : 'bg-gray-800 border-gray-600 hover:bg-gray-700';
+                container.innerHTML += `<button onclick="changePage(${i})" class="px-3 py-1 border rounded text-sm ${activeClass}">${i}</button>`;
+            }
+
+            // Tombol Next
+            const nextBtn = `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled class="opacity-50 cursor-not-allowed"' : ''} class="px-3 py-1 bg-gray-800 border border-gray-600 rounded text-sm hover:bg-gray-700">&rarr;</button>`;
+            container.innerHTML += nextBtn;
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(processedMovies.length / ITEMS_PER_PAGE);
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            renderPage(currentPage);
+            renderPagination();
+            
+            // Scroll ke atas grid (opsional, agar user tidak tetap di bawah)
+            document.getElementById('movie-grid').scrollIntoView({ behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>

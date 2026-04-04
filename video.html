@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title id="pageTitle">Watch — StreamVault</title>
+  <meta id="pageDesc"      name="description"    content="Watch on StreamVault.">
+  <meta id="ogTitle"       property="og:title"   content="Watch — StreamVault">
+  <meta id="ogDesc"        property="og:description" content="Watch on StreamVault.">
+  <meta id="ogImg"         property="og:image"   content="">
+  <meta                    property="og:type"    content="video.other">
+  <meta name="robots"      content="index, follow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23e50914'/><text y='.9em' font-size='72' x='14'>▶</text></svg>">
+
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- JSON-LD (filled by JS) -->
+  <script type="application/ld+json" id="videoSchema">{}</script>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="StreamVault Home">StreamVault</a>
+
+    <nav>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/browse">Browse</a></li>
+        <li><a href="/trending">Trending</a></li>
+        <li><a href="/new">New</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-search">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" id="searchInput" placeholder="Search videos…" autocomplete="off" aria-label="Search">
+    </div>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6"  x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- ========== PLAYER PAGE ========== -->
+<div class="player-page">
+  <div class="player-layout">
+
+    <!-- Left: Player + Info -->
+    <div class="player-main">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" style="margin-bottom:1rem; font-size:0.82rem; color:var(--text-muted);">
+        <a href="/" style="color:var(--text-muted); transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Home</a>
+        <span style="margin:0 8px;">›</span>
+        <span id="breadcrumbCat" style="color:var(--text-secondary);"></span>
+        <span style="margin:0 8px;">›</span>
+        <span id="breadcrumbTitle" style="color:var(--text-primary);"></span>
+      </nav>
+
+      <!-- Video Player -->
+      <div class="player-wrap" aria-label="Video Player">
+        <iframe
+          id="videoPlayer"
+          src=""
+          allowfullscreen
+          allow="autoplay; fullscreen; picture-in-picture"
+          title="Video Player"
+        ></iframe>
+      </div>
+
+      <!-- Video Info -->
+      <div class="player-info">
+        <h1 class="player-title" id="playerTitle">Loading…</h1>
+
+        <div class="player-meta-row">
+          <span class="meta-item rating">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span id="playerRating">—</span>
+          </span>
+          <span class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span id="playerDate">—</span>
+          </span>
+          <span class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span id="playerViews">—</span>
+          </span>
+          <span class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span id="playerDuration">—</span>
+          </span>
+          <span class="meta-item" style="padding:3px 10px; background:rgba(229,9,20,0.1); border:1px solid rgba(229,9,20,0.25); border-radius:12px; color:var(--red); font-size:0.8rem; font-weight:600;">
+            <span id="playerCategory">—</span>
+          </span>
+        </div>
+
+        <div class="player-tags" id="playerTags"></div>
+
+        <div class="player-divider"></div>
+
+        <!-- Share row -->
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <span style="font-size:0.85rem; color:var(--text-muted); font-weight:500;">Share:</span>
+          <button onclick="copyLink()" style="padding:7px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--text-secondary); font-size:0.82rem; font-family:var(--font-body); display:flex; align-items:center; gap:6px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--text-primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            Copy Link
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Related Videos -->
+    <aside class="related-sidebar" aria-label="Related Videos">
+      <h2 class="related-title">Related Videos</h2>
+      <div class="related-list" id="relatedList"></div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <p>© 2026 StreamVault. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/dmca">DMCA</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button class="back-top" id="backTop" aria-label="Back to top">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => showToast('Link copied to clipboard!')).catch(() => showToast('Could not copy link.'));
+}
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// SEO: update structured data after load
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const title = document.getElementById('playerTitle')?.textContent;
+        const img   = document.getElementById('ogImg')?.content;
+        if (title && title !== 'Loading…') {
+            document.getElementById('videoSchema').textContent = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "VideoObject",
+                "name": title,
+                "thumbnailUrl": img,
+                "uploadDate": document.getElementById('playerDate')?.textContent,
+                "url": window.location.href
+            });
+        }
+    }, 1500);
+});
+</script>
+
+<script src="/js/data.js"></script>
+<script src="/js/main.js"></script>
+
+</body>
+</html>

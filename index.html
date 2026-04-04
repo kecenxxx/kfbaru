@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>StreamVault — Discover &amp; Watch Premium Videos</title>
+  <meta name="description" content="StreamVault — Your go-to destination for premium video streaming. Browse thousands of titles in HD quality.">
+  <meta name="keywords" content="streaming, video, watch online, HD, movies, series">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://yourdomain.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="StreamVault — Premium Video Streaming">
+  <meta property="og:description" content="Discover and watch premium videos on StreamVault.">
+  <meta property="og:url"         content="https://yourdomain.com/">
+  <meta property="og:site_name"   content="StreamVault">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="StreamVault — Premium Video Streaming">
+  <meta name="twitter:description" content="Discover and watch premium videos on StreamVault.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23e50914'/><text y='.9em' font-size='72' x='14'>▶</text></svg>">
+
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "StreamVault",
+    "url": "https://yourdomain.com",
+    "description": "Premium video streaming platform",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://yourdomain.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="StreamVault Home">StreamVault</a>
+
+    <nav>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/" class="active">Home</a></li>
+        <li><a href="/browse">Browse</a></li>
+        <li><a href="/trending">Trending</a></li>
+        <li><a href="/new">New</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-search">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" id="searchInput" placeholder="Search videos, categories…" autocomplete="off" aria-label="Search">
+    </div>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6"  x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- ========== HERO SLIDER ========== -->
+<section class="hero" aria-label="Featured Videos">
+  <div id="heroSlider"></div>
+  <div class="hero-dots" id="heroDots" aria-label="Slide controls"></div>
+</section>
+
+<!-- ========== MAIN ========== -->
+<main class="main">
+
+  <!-- TOP PICKS ROW -->
+  <section class="section" aria-labelledby="topPicksLabel">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title" id="topPicksLabel">Top Picks</h2>
+        <a href="/browse" class="section-link">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+      <div class="video-row">
+        <button class="row-arrow left" onclick="scrollRow('topPicksRow', -1)" aria-label="Scroll left">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="video-row-track" id="topPicksRow"></div>
+        <button class="row-arrow right" onclick="scrollRow('topPicksRow', 1)" aria-label="Scroll right">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW UPLOADS ROW -->
+  <section class="section" aria-labelledby="newLabel">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title" id="newLabel">New Uploads</h2>
+        <a href="/new" class="section-link">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+      <div class="video-row">
+        <button class="row-arrow left" onclick="scrollRow('newRow', -1)" aria-label="Scroll left">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="video-row-track" id="newRow"></div>
+        <button class="row-arrow right" onclick="scrollRow('newRow', 1)" aria-label="Scroll right">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRENDING ROW -->
+  <section class="section" aria-labelledby="trendingLabel">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title" id="trendingLabel">Trending Now</h2>
+        <a href="/trending" class="section-link">
+          See all
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+      <div class="video-row">
+        <button class="row-arrow left" onclick="scrollRow('trendingRow', -1)" aria-label="Scroll left">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="video-row-track" id="trendingRow"></div>
+        <button class="row-arrow right" onclick="scrollRow('trendingRow', 1)" aria-label="Scroll right">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BROWSE ALL (with category filter + pagination) -->
+  <section class="section" id="browseSection" aria-labelledby="browseLabel">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title" id="browseLabel">Browse All</h2>
+      </div>
+
+      <div class="category-filter" id="categoryFilter" role="group" aria-label="Filter by category"></div>
+
+      <div class="video-grid" id="videoGrid" role="list"></div>
+
+      <nav class="pagination" id="pagination" aria-label="Pagination"></nav>
+    </div>
+  </section>
+
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo" aria-label="StreamVault">StreamVault</a>
+        <p>Your destination for premium video streaming. Discover thousands of titles in stunning HD quality, anytime and anywhere.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navigate</h5>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/browse">Browse</a></li>
+          <li><a href="/trending">Trending</a></li>
+          <li><a href="/new">New Releases</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Categories</h5>
+        <ul id="footerCategories">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Drama</a></li>
+          <li><a href="#">Comedy</a></li>
+          <li><a href="#">Sci-Fi</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/dmca">DMCA</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 StreamVault. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/dmca">DMCA</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button class="back-top" id="backTop" aria-label="Back to top">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<script src="/js/data.js"></script>
+<script src="/js/main.js"></script>
+
+</body>
+</html>

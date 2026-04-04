@@ -243,7 +243,7 @@ const videoData = [
         duration: "1:45:00",
         views: "1.0M",
         rating: 4.3
-    }
+    },
     {
         id: 21,
         title: "Big Titty Mommy Gets It Rough - Simon Kitty",
@@ -259,7 +259,7 @@ const videoData = [
 const categories = [
     "All",
     "Featured",
-    "Action",
+    "Hardcore",
     "Drama",
     "Comedy",
     "Horror",
